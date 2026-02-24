@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'sai20454/maven-abhishek-docker-agent:v2'
+      image 'sai20454/maven-abhishek-docker-agent:v3'
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
     }
   }
