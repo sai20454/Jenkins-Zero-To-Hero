@@ -5,13 +5,17 @@ pipeline {
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
     }
   }
-
+ 
   stages {
-
+    options {
+    skipDefaultCheckout(true)
+}
     stage('Checkout') {
       steps {
-        checkout scm
-        sh 'ls -la'
+        sh '''
+          rm -rf *
+          git clone https://github.com/sai20454/Jenkins-Zero-To-Hero.git .
+        '''
       }
     }
 
