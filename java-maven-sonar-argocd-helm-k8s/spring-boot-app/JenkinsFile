@@ -11,8 +11,10 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-          deleteDir()
-          sh 'git clone https://github.com/sai20454/Jenkins-Zero-To-Hero.git .'
+         sh '''
+            rm -rf ./* ./.??*
+            git clone https://github.com/sai20454/Jenkins-Zero-To-Hero.git .
+         '''
       }
     }
 
