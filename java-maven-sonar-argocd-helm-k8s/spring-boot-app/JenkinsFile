@@ -61,29 +61,29 @@ pipeline {
     }
 
             
-  stage('Update Deployment File') {
+stage('Update Deployment File') {
   environment {
     GIT_REPO_NAME = "Jenkins-Zero-To-Hero"
     GIT_USER_NAME = "sai20454"
   }
   steps {
     withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-      dir("${WORKSPACE}") {
-        sh '''
-          pwd
-          ls -la
-          git config user.email "polisettykrishna123@gmail.com"
-          git config user.name "sai20454"
+      sh '''
+        pwd
+        ls -la
 
-          sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" \
-          java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+        # Tell git explicitly where the repo is
+        git -C ${WORKSPACE} config user.email "polisettykrishna123@gmail.com"
+        git -C ${WORKSPACE} config user.name "sai20454"
 
-          git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
-          git commit -m "Update deployment image to version ${BUILD_NUMBER}" || echo "No changes"
+        sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" \
+        ${WORKSPACE}/java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
 
-          git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git HEAD:main
-        '''
-      }
+        git -C ${WORKSPACE} add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+        git -C ${WORKSPACE} commit -m "Update deployment image to version ${BUILD_NUMBER}" || echo "No changes"
+
+        git -C ${WORKSPACE} push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git HEAD:main
+      '''
     }
   }
 }
