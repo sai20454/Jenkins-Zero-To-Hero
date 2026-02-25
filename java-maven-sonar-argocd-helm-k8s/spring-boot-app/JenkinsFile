@@ -71,7 +71,7 @@ stage('Update Deployment File') {
       sh '''
         pwd
         ls -la
-
+        git config --global --add safe.directory ${WORKSPACE}
         # Tell git explicitly where the repo is
         git -C ${WORKSPACE} config user.email "polisettykrishna123@gmail.com"
         git -C ${WORKSPACE} config user.name "sai20454"
